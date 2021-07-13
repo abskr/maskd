@@ -9,8 +9,8 @@ class Register extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
-      email: "",
+      age: "",
+      username: "",
       password: "",
       password2: "",
       errors: {}
@@ -40,8 +40,8 @@ class Register extends Component {
     e.preventDefault();
 
     const newUser = {
-      name: this.state.name,
-      email: this.state.email,
+      age: this.state.age,
+      username: this.state.username,
       password: this.state.password,
       password2: this.state.password2
     };
@@ -72,30 +72,30 @@ class Register extends Component {
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
-                  value={this.state.name}
-                  error={errors.name}
-                  id="name"
+                  value={this.state.age}
+                  error={errors.age}
+                  id="age"
                   type="text"
                   className={classnames("", {
-                    invalid: errors.name
+                    invalid: errors.age
                   })}
                 />
-                <label htmlFor="name">Name</label>
-                <span className="red-text">{errors.name}</span>
+                <label htmlFor="age">Age</label>
+                <span className="red-text">{errors.age}</span>
               </div>
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
-                  value={this.state.email}
-                  error={errors.email}
-                  id="email"
-                  type="email"
+                  value={this.state.username}
+                  error={errors.username}
+                  id="username"
+                  type="text"
                   className={classnames("", {
-                    invalid: errors.email
+                    invalid: errors.username
                   })}
                 />
-                <label htmlFor="email">Email</label>
-                <span className="red-text">{errors.email}</span>
+                <label htmlFor="username">Username</label>
+                <span className="red-text">{errors.username}</span>
               </div>
               <div className="input-field col s12">
                 <input

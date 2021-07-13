@@ -2,12 +2,15 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
+// const keys = require("../../config/keys");
 const passport = require("passport");
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+
+// Load middleware
+const {checkUser} = require("../middlewares/authMiddleware")
 
 // Load User model
 const User = require("../../models/User");
@@ -79,16 +82,19 @@ router.post("/login", (req, res) => {
         // User matched
         // Create JWT Payload
         const payload = {
-          id: user.id,
-          age: user.age
+            id: user.id,
+            username: user.username,
+            followers: user.followers,
+            following: user.following,
+            age: user.age
         };
 
         // Sign token
         jwt.sign(
           payload,
-          keys.secretOrKey,
+          process.env.JWT_SECRET,
           {
-            expiresIn: 31556926 // 1 year in seconds
+            expiresIn: 86400 // 24 hours in seconds
           },
           (err, token) => {
             res.json({
@@ -104,6 +110,19 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+// @route POST api/users/login
+// @desc Login user and return JWT token
+// @access Public
+router.get("/me", checkUser, async (req, res) => {
+  try{
+    const {user} = req
+    res.status(200).json(user)
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
 });
 
 module.exports = router;

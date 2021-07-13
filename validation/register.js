@@ -37,7 +37,7 @@ module.exports = function validateRegisterInput(data) {
     errors.password2 = "Confirm password didn't match match";
   }
 
-  if(!Validators.isInt(data.age, {min: 18})) {
+  if(!Validator.isInt(data.age, {min: 18})) {
     errors.age = "Be 18 years old!"
   }
 
