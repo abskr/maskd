@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const listEndpoints = require("express-list-endpoints")
+const cors = require("cors")
 
 const users = require("./routes/api/users");
 const posts = require("./routes/api/posts")
@@ -16,6 +17,9 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+// CORS Middleware
+app.use(cors())
 
 
 // Connect to MongoDB

@@ -1,58 +1,63 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import jwt_decode from "jwt-decode";
-import setAuthToken from "./utils/setAuthToken";
+import jwt_decode from 'jwt-decode';
+import setAuthHeader from './utils/setAuthHeader';
+import store from './store';
+import styled from 'styled-components'
+import { logoutUser, setCurrentUser } from './store/actions/authActions';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { setCurrentUser, logoutUser } from "./actions/authActions";
-import { Provider } from "react-redux";
-import store from "./store";
+import NavBar from './components/shared/NavBar';
+import LandingPage from './pages/LandingPage'
+import RegisterPage from './pages/RegisterPage'
+import DashboardPage from './pages/DashboardPage';
+import PrivateRoute from './utils/private-route/PrivateRoute';
 
-import Navbar from "./components/layout/Navbar";
-import Landing from "./components/layout/Landing";
-import Register from "./components/auth/Register";
-import Login from "./components/auth/Login";
-import PrivateRoute from "./components/private-route/PrivateRoute";
-import Dashboard from "./components/dashboard/Dashboard";
-
-import "./App.css";
-
-// Check for token to keep user logged in
+// check token, keeps user logged in
 if (localStorage.jwtToken) {
-  // Set auth token header auth
+  // set auth token header auth
   const token = localStorage.jwtToken;
-  setAuthToken(token);
-  // Decode token and get user info and exp
+  setAuthHeader(token);
+
+  // decode token
   const decoded = jwt_decode(token);
-  // Set user and isAuthenticated
+
+  // set user and 'isAuthenticated'
   store.dispatch(setCurrentUser(decoded));
-  // Check for expired token
-  const currentTime = Date.now() / 1000; // to get in milliseconds
+
+  // check token expire
+  const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
-    // Logout user
-    store.dispatch(logoutUser());
+    // expiry logout
+    store.dispatch(logoutUser);
 
-    // Redirect to login
-    window.location.href = "./login";
+    // redirect to login page
+    // window.location.href ='./login'
   }
 }
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Router>
-          <div className="App">
-            <Navbar />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Switch>
-              <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            </Switch>
-          </div>
-        </Router>
-      </Provider>
-    );
-  }
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Router>
+        <div className='App'>
+          <NavBar />
+          <AppRoute exact path='/' component={LandingPage} />
+          <Route exact path='/register' component={RegisterPage} />
+          {/* <Route exact path="/login" component={Login} />*/}
+          <Switch>
+            <PrivateRoute exact path='/dashboard' component={DashboardPage} />
+          </Switch>
+        </div>
+      </Router>
+    </Provider>
+  );
 }
-export default App;
+
+
+ const AppRoute = styled(Route)`
+  background-color: grey;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 80vh;
+ `
