@@ -4,6 +4,7 @@ import bodyParser from "body-parser"
 import passport from "passport"
 import listEndpoints from "express-list-endpoints"
 import cors from "cors"
+import {} from "./config/passport.js"
 
 import users from "./routes/api/users.js"
 import posts from "./routes/api/posts.js"
@@ -42,7 +43,6 @@ app.use(passport.initialize());
 
 // Passport config
 // Passport config
-require("./config/passport").default(passport);
 
 // Routes
 app.use("/api/posts", posts);
