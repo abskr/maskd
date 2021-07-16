@@ -1,7 +1,7 @@
 import { GET_POSTS, POSTS_LOADING } from '../types';
 
 const initialState = {
-  post: {},
+  posts: [],
   loading: false,
 };
 

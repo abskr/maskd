@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {Col, Row} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchPost } from '../store/actions/feedActions';
 import { logoutUser } from '../store/actions/authActions'
 
 import ProfileBadge from '../components/Dashboard/ProfileBadge'
@@ -13,6 +14,10 @@ export default function DashboardPage() {
 
   const user = useSelector(state => state.auth.user)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchPost())
+  })
   
   const handleLogout = (e) => {
     e.preventDefault()
@@ -25,14 +30,17 @@ export default function DashboardPage() {
   return (
     <PageContainer>
       <InnerContainer>
-        <Row style={{ width: '100%' }}>
+        <Row
+          style={{ width: '100%', height: '100%' }}
+          clasName='therowimlookingfor'
+        >
           <Col xs={12} md={4}>
             <ProfileBadge user={user} />
             <button onClick={handleShow}>add post</button>
             <CreatePost show={show} handleClose={handleClose} />
             <button onClick={handleLogout}>logout</button>
           </Col>
-          <Col xs={12} md={8}>
+          <Col xs={12} md={8} style={{ height: '100%', overflowY: 'scroll' }}>
             <PostFeeds />
           </Col>
         </Row>

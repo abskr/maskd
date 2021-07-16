@@ -43,7 +43,7 @@ exports.getUserDetail = function (req, res, next) {
           console.log(err.message);
           res.status(400).send('Token is not verified');
         } else {
-          req.userId = user.id;
+          req.author = user.id;
           next();
         }
       });

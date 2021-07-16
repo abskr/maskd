@@ -1,16 +1,18 @@
 const mongoose = require('mongoose')
 const express = require("express")
 const router = express.Router()
+const { detectFace } = require('../middlewares/blazefaceMiddleware')
 // const jwt = require("jsonwebtoken")
 // const passport = require("passport")
 
 // import middlewares
 const { checkUser } = require("../middlewares/authMiddleware")
+const parser = require("../middlewares/cloudinary/post")
+const {imgClassifier} = require('../middlewares/imgClassifier')
 
 // Load models
 const User = require("../../models/User");
 const Post = require("../../models/post");
-const { findByIdAndDelete } = require("../../models/User");
 
 // Load input validation
 // NOT DONE
@@ -20,7 +22,7 @@ const { findByIdAndDelete } = require("../../models/User");
 // @access Private
 router.get("/", checkUser, async (req, res) => {
   try {
-    const posts = await Post.find()
+    const posts = await Post.find().sort([['createdAt', -1]]).populate('author', 'username')
     res.status(200).send(posts)
   } catch (error) {
     console.log(error)
@@ -32,13 +34,13 @@ router.get("/", checkUser, async (req, res) => {
 // @desc fetch all Post
 // @access Private
 router.post("/", checkUser, async (req, res) => {
-  // console.log(req.userId)
+  // console.log(req.author)
   // Check if user exists
-  req.body.userId = req.user._id
+  req.body.author = req.user._id
   try {
     const post = new Post({
       text: req.body.text,
-      userId: req.body.userId
+      author: req.body.author
     })
     const newPost = await post.save()
     // console.log(newPost)
@@ -65,11 +67,11 @@ router.get('/:id', checkUser, async (req, res) => {
 })
 
 // router.put('/:id', checkUser, async (req, res) => {
-//   const userId = req.user._id
+//   const author = req.user._id
 //   const postId = req.params._id
 //   try {
 //     const updatePost = {text: req.body.text}
-//     const post = await Post.findOneAndUpdate({_id: postId, userId: userId}, updatePost, {new: true})
+//     const post = await Post.findOneAndUpdate({_id: postId, author: author}, updatePost, {new: true})
 //     if (!post) res.send(404).send('post not found!')
 //     // const {_id} = post
 //     res.status(202).send(post)
@@ -84,15 +86,15 @@ router.get('/:id', checkUser, async (req, res) => {
 // @access Private
 router.delete('/:id', checkUser, async (req, res) => {
   try {
-    const postId = req.params.id;
-    const post = await Post.findOne( {_id: postId, userId: req.user._id});
+    const postId = req.params.id
+    const post = await Post.findOne( {_id: postId, author: req.user._id});
     if (!post) {
       return res.status(404).send('Post not found!')
     }
-    if (!req.user._id.equals(post.userId)) {
+    if (!req.user._id.equals(post.author)) {
       return res.status(403).send('Unauthorized!');
     } else {
-      await Post.findOneAndDelete({ _id: postId, userId: req.user._id });
+      await Post.findOneAndDelete({ _id: postId, author: req.user._id });
       return res.status(204).send();
     }
   } catch (error) {
@@ -101,6 +103,41 @@ router.delete('/:id', checkUser, async (req, res) => {
   }
 });
 
+// @route post api/posts/:id/upload
+// @desc fetch a post by id
+// @access Private
+router.post('/:id/upload', [checkUser, imgClassifier, parser.single("postImg")], async (req, res) => {
+  const postId = req.params.id
+  console.log(postId)
+  try {
+    const post = await Post.findById(postId);
+    console.log(post === null)
+    if (post === null) {
+      if (!req.user._id.equals(post.author)) {
+        return res
+        .status(403)
+        .json({ forbiddenerror: 'Action is not authorized!' });
+      }
+      return res.status(404).json({ postnotfound: 'Post not found!' });
+    } else {
+      console.log(req.file);
+      const image = req.file && req.file.path;
+      const postUpdate = await Post.findOneAndUpdate(
+        { _id: postId, author: req.user._id },
+        { $set: { image } },
+        { runValidators: true, new: true }
+      );
+      res.status(201).json({ postUpdate });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+// @route post api/posts/:id/upvote
+// @desc add author to upvote
+// @access Private
 router.post('/:id/upvote', checkUser, async (req, res) => {
   try {
     const postId = req.params.id;
@@ -108,16 +145,16 @@ router.post('/:id/upvote', checkUser, async (req, res) => {
     if (!post) {
       return res.status(404).send('Post not found!');
     }
-    // const userId = req.user._id
+    // const author = req.user._id
     const {votes} = post
-    const userId = mongoose.Types.ObjectId(req.user._id)
-    // console.log(votes.includes(userId))
-    const userLiked = votes.includes(userId);
+    const author = mongoose.Types.ObjectId(req.user._id)
+    // console.log(votes.includes(author))
+    const userLiked = votes.includes(author);
     if (userLiked) {
-      await Post.findByIdAndUpdate(postId, {$pull: {votes: {$in: [userId]}}}, {new: true})
+      await Post.findByIdAndUpdate(postId, {$pull: {votes: {$in: [author]}}}, {new: true})
       return res.status(202).send('upvote removed!')
     } else {
-      await Post.findByIdAndUpdate(postId, {$push: {votes: userId}}, {new: true});
+      await Post.findByIdAndUpdate(postId, {$push: {votes: author}}, {new: true});
       return res.status(202).send('upvote success!');
     }
   } catch (error) {

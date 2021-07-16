@@ -13,6 +13,11 @@
   "author": "Andi Baskara",
   "license": "MIT",
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.4",
+    "@tensorflow-models/mobilenet": "^2.1.0",
+    "@tensorflow/tfjs": "^3.8.0",
+    "@tensorflow/tfjs-node": "^3.8.0",
+    "@tensorflow/tfjs-node-gpu": "^3.8.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.26.2",
@@ -25,6 +30,7 @@
     "mongoose": "^5.3.11",
     "multer": "^1.4.2",
     "multer-storage-cloudinary": "^4.0.0",
+    "node-pre-gyp": "^0.17.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "validator": "^10.9.0"

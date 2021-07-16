@@ -8,7 +8,7 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    userId: {
+    author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'users',
       required: true,
@@ -20,8 +20,7 @@ const PostSchema = new Schema(
     votes:  [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'users',
-          unique: true
+          ref: 'users'
         }
       ]
   },
