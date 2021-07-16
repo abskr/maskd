@@ -1,12 +1,12 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const passport = require("passport");
-const listEndpoints = require("express-list-endpoints")
-const cors = require("cors")
+import express from "express"
+import mongoose from "mongoose"
+import bodyParser from "body-parser"
+import passport from "passport"
+import listEndpoints from "express-list-endpoints"
+import cors from "cors"
 
-const users = require("./routes/api/users");
-const posts = require("./routes/api/posts")
+import users from "./routes/api/users.js"
+import posts from "./routes/api/posts.js"
 
 const app = express();
 
@@ -41,7 +41,8 @@ mongoose
 app.use(passport.initialize());
 
 // Passport config
-require("./config/passport")(passport);
+// Passport config
+require("./config/passport").default(passport);
 
 // Routes
 app.use("/api/posts", posts);
