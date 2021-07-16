@@ -1,19 +1,20 @@
-const express = require("express");
-const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-// const keys = require("../../config/keys");
-const passport = require("passport");
+import express from "express"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+// const keys from "../../config/keys");
+import passport from "passport"
 
 // Load input validation
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
+import validateRegisterInput from "../../validation/register.js"
+import validateLoginInput from "../../validation/login.js"
 
 // Load middleware
-const {checkUser} = require("../middlewares/authMiddleware")
+import {checkUser} from "../middlewares/authMiddleware.js"
 
 // Load User model
-const User = require("../../models/User");
+import User from "../../models/User.js"
+
+const router = express.Router();
 
 // @route POST api/users/register
 // @desc Register user
@@ -125,4 +126,4 @@ router.get("/me", checkUser, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router

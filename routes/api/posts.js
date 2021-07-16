@@ -1,19 +1,19 @@
-const mongoose = require('mongoose')
-const express = require("express")
-const router = express.Router()
-const { detectFace } = require('../middlewares/blazefaceMiddleware')
+import mongoose from 'mongoose'
+import express from "express"
+// const { detectFace } = require('../middlewares/blazefaceMiddleware')
 // const jwt = require("jsonwebtoken")
 // const passport = require("passport")
 
 // import middlewares
-const { checkUser } = require("../middlewares/authMiddleware")
-const parser = require("../middlewares/cloudinary/post")
-const {imgClassifier} = require('../middlewares/imgClassifier')
+import { checkUser } from "../middlewares/authMiddleware.js"
+import parser from "../middlewares/cloudinary/post.js"
+// import imgClassifier from '../middlewares/imgClassifier.js'
 
 // Load models
-const User = require("../../models/User");
-const Post = require("../../models/post");
+import User from "../../models/User.js"
+import Post from "../../models/Post.js"
 
+const router = express.Router()
 // Load input validation
 // NOT DONE
 
@@ -106,7 +106,7 @@ router.delete('/:id', checkUser, async (req, res) => {
 // @route post api/posts/:id/upload
 // @desc fetch a post by id
 // @access Private
-router.post('/:id/upload', [checkUser, imgClassifier, parser.single("postImg")], async (req, res) => {
+router.post('/:id/upload', [checkUser, parser.single("postImg")], async (req, res) => {
   const postId = req.params.id
   console.log(postId)
   try {
@@ -163,4 +163,4 @@ router.post('/:id/upvote', checkUser, async (req, res) => {
   }
 });
 
-module.exports = router
+export default router

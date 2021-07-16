@@ -1,6 +1,6 @@
-const cloudinary = require('./config');
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+import cloudinary from './config.js'
+import multer from 'multer'
+import { CloudinaryStorage } from 'multer-storage-cloudinary'
 //multer settings
 const storage = new CloudinaryStorage({
   cloudinary,
@@ -10,4 +10,4 @@ const storage = new CloudinaryStorage({
 });
 const parser = multer({ storage });
 
-module.exports = parser;
+export default parser

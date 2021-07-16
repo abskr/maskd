@@ -1,8 +1,8 @@
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const User = require('../../models/User')
+import passport from 'passport'
+import jwt from 'jsonwebtoken'
+import User from '../../models/User.js'
 
-exports.checkUser = function  (req, res, next) {
+export const checkUser = function  (req, res, next) {
   let token = req.headers.authorization.replace('Bearer ', '')
   // console.log("this is middleware")
   // console.log(token)
@@ -35,7 +35,7 @@ exports.checkUser = function  (req, res, next) {
   }
 }
 
-exports.getUserDetail = function (req, res, next) {
+export const getUserDetail = function (req, res, next) {
   let token = req.headers.authorization.replace('Bearer ', '');
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, user) => {

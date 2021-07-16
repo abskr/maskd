@@ -11,6 +11,7 @@ import LandingPage from './pages/LandingPage'
 import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage';
 import PrivateRoute from './utils/private-route/PrivateRoute';
+import ProfilePage from './pages/ProfilePage';
 
 // check token, keeps user logged in
 if (localStorage.jwtToken) {
@@ -43,7 +44,7 @@ export default function App() {
           <NavBar />
           <AppRoute exact path='/' component={LandingPage} />
           <Route exact path='/register' component={RegisterPage} />
-          {/* <Route exact path="/login" component={Login} />*/}
+          <Route path="/profile/:id" component={ProfilePage} />
           <Switch>
             <PrivateRoute exact path='/dashboard' component={DashboardPage} />
           </Switch>
