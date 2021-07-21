@@ -6,9 +6,9 @@ import { logoutUser, setCurrentUser } from './store/actions/authActions';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import NavBar from './components/shared/NavBar';
+
 import LandingPage from './pages/LandingPage'
-import RegisterPage from './pages/RegisterPage'
+// import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage';
 import PrivateRoute from './utils/private-route/PrivateRoute';
 import ProfilePage from './pages/ProfilePage';
@@ -41,10 +41,10 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <div className='App'>
-          <NavBar />
+
           <AppRoute exact path='/' component={LandingPage} />
-          <Route exact path='/register' component={RegisterPage} />
-          <Route path="/profile/:id" component={ProfilePage} />
+          {/* <Route exact path='/register' component={RegisterPage} /> */}
+          <Route path="/profile/:username" component={ProfilePage} />
           <Switch>
             <PrivateRoute exact path='/dashboard' component={DashboardPage} />
           </Switch>
