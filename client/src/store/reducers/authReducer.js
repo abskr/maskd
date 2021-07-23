@@ -1,9 +1,11 @@
 import isEmpty from 'is-empty';
-import { SET_CURRENT_USER, USER_LOADING } from '../types';
+import { SET_CURRENT_USER, USER_LOADING, GET_USER_DETAIL } from '../types';
 
 const initialState = {
   isAuthenticated: false,
   user: {},
+  followers: [],
+  following: [],
   loading: false,
 };
 
@@ -15,6 +17,12 @@ const authReducer = (state = initialState, action) => {
         isAuthenticated: !isEmpty(action.payload),
         user: action.payload,
       };
+    case GET_USER_DETAIL:
+      return {
+        ...state,
+        followers: action.payload.followers,
+        following: action.payload.following
+      }
     case USER_LOADING:
       return {
         ...state,

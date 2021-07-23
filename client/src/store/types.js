@@ -1,6 +1,10 @@
 export const GET_ERRORS = 'GET_ERRORS';
 export const USER_LOADING = 'USER_LOADING';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const GET_USER_DETAIL = 'GET_USER_DETAIL';
+
+export const GET_SELECTED_USER = 'GET_SELECTED_USER'
+
 
 export const GET_POSTS = 'GET_POSTS'
 export const POSTS_LOADING = 'POST_LOADING'

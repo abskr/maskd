@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const {Schema, model} = mongoose
 
 // Create Schema
-const PostSchema = new Schema(
+export const PostSchema = new Schema(
   {
     text: {
       type: String,

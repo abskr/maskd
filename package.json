@@ -15,8 +15,10 @@
   "license": "MIT",
   "dependencies": {
     "@mapbox/node-pre-gyp": "^1.0.4",
+    "@tensorflow-models/blazeface": "^0.0.7",
     "@tensorflow-models/mobilenet": "^2.1.0",
     "@tensorflow/tfjs": "^3.8.0",
+    "@tensorflow/tfjs-backend-wasm": "^3.8.0",
     "@tensorflow/tfjs-node": "^3.8.0",
     "@tensorflow/tfjs-node-gpu": "^3.8.0",
     "bcryptjs": "^2.4.3",
@@ -26,6 +28,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-list-endpoints": "^5.0.0",
+    "geoip-lite": "^1.4.2",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.3.11",
@@ -34,6 +37,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "query-to-mongo": "^0.10.1",
+    "request-ip": "^2.1.3",
     "validator": "^10.9.0"
   },
   "devDependencies": {

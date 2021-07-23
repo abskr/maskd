@@ -7,7 +7,7 @@ import express from 'express';
 // import middlewares
 import { checkUser } from '../middlewares/authMiddleware.js';
 import parser from '../middlewares/cloudinary/post.js';
-// import imgClassifier from '../middlewares/imgClassifier.js'
+import imgClassifier from '../middlewares/imgClassifier.js'
 
 // Load models
 import User from '../../models/User.js';
@@ -68,21 +68,6 @@ router.get('/:id', checkUser, async (req, res) => {
   }
 });
 
-// router.put('/:id', checkUser, async (req, res) => {
-//   const author = req.user._id
-//   const postId = req.params._id
-//   try {
-//     const updatePost = {text: req.body.text}
-//     const post = await Post.findOneAndUpdate({_id: postId, author: author}, updatePost, {new: true})
-//     if (!post) res.send(404).send('post not found!')
-//     // const {_id} = post
-//     res.status(202).send(post)
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send(error);
-//   }
-// })
-
 // @route post api/posts/:id
 // @desc fetch a post by id
 // @access Private
@@ -116,7 +101,7 @@ router.post(
     console.log(postId);
     try {
       const post = await Post.findById(postId);
-      console.log(post === null);
+      console.log(post);
       if (post === null) {
         if (!req.user._id.equals(post.author)) {
           return res

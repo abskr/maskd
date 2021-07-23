@@ -32,13 +32,12 @@ export default function DashboardPage() {
       <InnerContainer>
         <Row
           style={{ width: '100%', height: '100%' }}
-          clasName='therowimlookingfor'
         >
           <Col xs={12} md={4}>
-            <ProfileBadge user={user} />
-            <button onClick={handleShow}>add post</button>
+            <ProfileBadge username={user.username}/>
+            <Buttons className="mt-2" onClick={handleShow}>add post</Buttons>
             <CreatePost show={show} handleClose={handleClose} />
-            <button onClick={handleLogout}>logout</button>
+            <Buttons onClick={handleLogout}>logout</Buttons>
           </Col>
           <Col xs={12} md={8} style={{ height: '100%', overflowY: 'scroll' }}>
             <PostFeeds />
@@ -50,19 +49,44 @@ export default function DashboardPage() {
 }
 
 const PageContainer = styled.div`
-  background-color: gray;
-  margin-top: 10vh;
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   display: flex;
 `;
 
 const InnerContainer = styled.div`
   border-radius: 10px;
-  background-color: white;
+  background-color: #1b263b;
   padding: 1rem;
-  height: 90%;
+  height: 100%;
   width: 90%;
   margin: auto;
   align-self: center;
+  justify-self: center;
+`;
+
+const Buttons = styled.a`
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+  
+  :hover{
+  color:#000000;
+  background-color:#FFFFFF;
+  }
+
+  @media all and (max-width:30em){
+ a.button1{
+  display:block;
+  margin:0.4em auto;
+  }  
+  }
 `;

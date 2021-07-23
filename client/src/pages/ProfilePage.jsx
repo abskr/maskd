@@ -1,33 +1,38 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import {useRouteMatch} from 'react-router-dom'
+// import ProfileBadge from '../components/Dashboard/ProfileBadge.jsx';
+import { getUserByUsername } from '../store/actions/usersActions.js'
 
 export default function ProfilePage() {
-  // const match = useRouteMatch();
+  const users = useSelector(state => state.users)
+  const {username} = useParams()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getUserByUsername(username));
+  },[])
+
 
   return (
     <PageContainer>
-      <InnerContainer>
-        
-      </InnerContainer>
+      <ProfileDetail/>
     </PageContainer>
   );
+
 }
 
 const PageContainer = styled.div`
-  background-color: gray;
-  margin-top: 10vh;
-  width: 100%;
-  height: 90vh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-`;
+  justify-content: center
+`
 
-const InnerContainer = styled.div`
-  border-radius: 10px;
-  background-color: white;
-  padding: 1rem;
-  height: 90%;
-  width: 90%;
-  margin: auto;
-  align-self: center;
-`;
+const ProfileDetail = styled.div`
+  background-color: #1b263b;
+  min-width: 40rem; 
+`
+
+

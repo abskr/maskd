@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
 import LandingPage from './pages/LandingPage'
-// import RegisterPage from './pages/RegisterPage'
+import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage';
 import PrivateRoute from './utils/private-route/PrivateRoute';
 import ProfilePage from './pages/ProfilePage';
@@ -43,7 +43,7 @@ export default function App() {
         <div className='App'>
 
           <AppRoute exact path='/' component={LandingPage} />
-          {/* <Route exact path='/register' component={RegisterPage} /> */}
+          <Route exact path='/register' component={RegisterPage} />
           <Route path="/profile/:username" component={ProfilePage} />
           <Switch>
             <PrivateRoute exact path='/dashboard' component={DashboardPage} />

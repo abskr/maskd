@@ -15,6 +15,7 @@ import { checkUser } from '../middlewares/authMiddleware.js';
 // Load User model
 import User from '../../models/User.js';
 import Following from '../../models/Following.js';
+import Post from '../../models/Post.js'
 
 const router = express.Router();
 
@@ -92,8 +93,6 @@ router.post('/login', (req, res) => {
     // Check if user exists
     if (!user) {
       return res.status(404).json({ usernamenotfound: 'Username not found' });
-    } else {
-      
     }
 
     // Check password
@@ -133,13 +132,33 @@ router.post('/login', (req, res) => {
 // @route GET api/users/:userId
 // @desc fetch other other userId
 // @access Private
-router.get('/:userId', checkUser, async (req, res) => {
+router.get('/me', checkUser, async (req, res) => {
   try {
-    const { userId } = req.params;
-    const user = await User.findById(userId);
+    const userId = req.user.id;
+    const user = await User.findById(userId, '-password');
     if (!user) res.send(404).send('user not found!');
     const following = await Following.findOne({ userId: user._id})
-    res.status(200).json({user, following});
+    const userObjId = mongoose.Types.ObjectId(user._id)
+    const followers = await Following.find({ uFollowing: userObjId})
+    res.status(200).json({user, following, followers});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+// @route GET api/users/:userId
+// @desc fetch other other userId
+// @access Private
+router.get('/:username', checkUser, async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username: username }, '-password');
+    if (!user) res.send(404).send('user not found!');
+    const following = await Following.findOne({ userId: user._id})
+    const userObjId = mongoose.Types.ObjectId(user._id)
+    const followers = await Following.find({ uFollowing: userObjId})
+    res.status(200).json({user, following, followers});
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
@@ -186,6 +205,22 @@ router.post('/:userId/ff', checkUser, async (req, res) => {
       return res.status(202).send('followed');
     }
     // res.send()
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+// @route post api/:userId/posts
+// @desc get posts from a user
+// @access Private
+router.get('/:userId/posts', checkUser, async (req, res) => {
+  try {
+    const uPosts = await Post.find({author : req.params.userId})
+    if (!uPosts) {
+      res.send("No posts from this account yet!")
+    }
+    res.send(uPosts)
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

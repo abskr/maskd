@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import User from '../../models/User.js'
 
 export const checkUser = function  (req, res, next) {
+  // console.log(req.headers)
   let token = req.headers.authorization.replace('Bearer ', '')
   // console.log("this is middleware")
   // console.log(token)

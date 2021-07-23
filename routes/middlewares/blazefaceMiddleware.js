@@ -12,7 +12,6 @@
 //     req.file,
 //     returnTensors
 //   );
-//   console.log(imgRef.current);
 //   console.log(predictions)
 //   if (predictions.length > 0) {
 //     res.status(406).json({ faceDetected: "Face(s) found in the image."})
