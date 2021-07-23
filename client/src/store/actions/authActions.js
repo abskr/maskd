@@ -2,9 +2,15 @@ import axios from 'axios';
 import setAuthHeader from '../../utils/setAuthHeader';
 import jwt_decode from 'jwt-decode';
 
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from '../types';
+import {
+  GET_ERRORS,
+  SET_CURRENT_USER,
+  USER_LOADING,
+  GET_USER_DETAIL,
+} from '../types';
 
 const baseUrl = 'http://localhost:5005'
+// const token = localStorage.getItem('jwtToken')
 
 export const registerUser = (userData, history) => (dispatch) => {
   axios
@@ -71,3 +77,15 @@ export const logoutUser = () => (dispatch) => {
   // set current user to empty object, set isAuthorized
   dispatch(setCurrentUser({}));
 };
+
+// get user details
+export const getUserDetail = () => async (dispatch) => {
+  const res = await axios.get(`${baseUrl}/api/users/me`)
+  dispatch({
+    type: GET_USER_DETAIL,
+    payload: {
+      followers: res.data.followers,
+      following: res.data.following
+    }
+  });
+}
